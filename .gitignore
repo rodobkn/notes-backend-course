@@ -2,3 +2,6 @@
 __pycache__/
 *.pyc
 *.pyo
+
+# Credenciales
+.env.local
