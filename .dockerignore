@@ -5,4 +5,6 @@ __pycache__/
 
 # Credenciales
 .env.local
+
+# comentar sensitive/ en desarrollo local con docker
 sensitive/
