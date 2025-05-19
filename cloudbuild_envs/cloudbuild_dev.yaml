@@ -15,7 +15,7 @@ steps:
     args: 
       [
         'build',
-        '--no-cache'
+        '--no-cache',
         '-t',
         'us-central1-docker.pkg.dev/notes-app-456603/notes-backend-artifact-repo/notes-backend:$COMMIT_SHA',
         '.'
