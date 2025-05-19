@@ -1,8 +1,8 @@
 import os
 from dotenv import load_dotenv
 
-# Cargar las variables de entorno desde el archivo .env.local
-load_dotenv(".env.local")
+# SETUP-LOCAL: Para cargar las variables de entorno desde el archivo .env.local descomentar la siguiente linea
+# load_dotenv(".env.local")
 
 class Settings:
     GCP_PROJECT_ID: str = os.getenv("GCP_PROJECT_ID")
