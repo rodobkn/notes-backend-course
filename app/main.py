@@ -19,3 +19,4 @@ app.include_router(notes_router)
 @app.get("/")
 def hello_world():
     return {"message": "Hello World AGAIN!"}
+
