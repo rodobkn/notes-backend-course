@@ -57,7 +57,7 @@ steps:
         '--service-account',
         'notes-backend-sa',
         '--update-secrets',
-        'GCP_PROJECT_ID=GCP_PROJECT_ID:latest,FIRESTORE_DATABASE_ID=FIRESTORE_DATABASE_ID:latest',
+        'GCP_PROJECT_ID=GCP_PROJECT_ID:latest,FIRESTORE_DATABASE_ID=FIRESTORE_DATABASE_ID:latest,GEMINI_GOOGLE_API_KEY=GEMINI_GOOGLE_API_KEY:latest',
       ]
 
 images:

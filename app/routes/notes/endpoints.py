@@ -138,3 +138,82 @@ async def delete_note(note_id: str) -> Dict[str, str]:
     return {
         "message": f"Note with ID {note_id} deleted"
     }
+
+
+
+# Resumir/Analizar una nota
+@router.get("/{note_id}/summary", status_code=200)
+async def summarize_note(note_id: str) -> Dict[str, str]:
+    db = get_firestore_client()
+    doc_ref = db.collection("notes").document(note_id)
+    doc = doc_ref.get()
+
+    if not doc.exists:
+        raise HTTPException(status_code=404, detail="Nota no encontrada")
+    
+    note_data = doc.to_dict()
+    title = note_data["title"]
+    content = note_data["content"]
+
+    gemini_client = get_gemini_client()
+
+    try:
+        prompt = f"""Esta es una nota con título y contenido.
+
+Título: {title}
+Contenido: {content}
+
+Resume esta nota de forma breve y clara.
+"""
+        
+        response = gemini_client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt
+        )
+        summary = response.text
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al generar resumen de la nota {note_id}: {str(e)}")
+
+    return { "summary": summary }
+
+
+# Analizar todas las notas y generar un perfil del usuario
+@router.get("/profile/ia", status_code=200)
+async def get_user_profile_from_notes() -> Dict[str, str]:
+    db = get_firestore_client()
+    collection_ref = db.collection("notes").order_by("updated_at", direction=firestore.Query.DESCENDING)
+
+    docs = collection_ref.stream()
+    notes = []
+
+    for doc in docs:
+        note = doc.to_dict()
+        title = note["title"]
+        content = note["content"]
+        notes.append(f"Título: {title}\nContenido: {content}")
+    
+    if len(notes) == 0:
+        raise HTTPException(status_code=404, detail="No hay notas disponibles para analizar")
+    
+    joined_notes = "\n\n".join(notes)
+
+    prompt = f"""A continuación tienes un conjunto de notas de un usuario.
+Cada nota tiene un título y un contenido.
+
+{joined_notes}
+
+Analiza el estilo, intereses, temas y tono de las notas.
+Describe cómo es este usuario en pocas frases, basándote sólo en la información provista."""
+    
+    gemini_client = get_gemini_client()
+
+    try:
+        response = gemini_client.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=prompt
+        )
+        profile_description = response.text
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al generar perfil del usuario: {str(e)}")
+    
+    return { "profile": profile_description }
