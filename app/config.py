@@ -7,6 +7,5 @@ from dotenv import load_dotenv
 class Settings:
     GCP_PROJECT_ID: str = os.getenv("GCP_PROJECT_ID")
     FIRESTORE_DATABASE_ID: str = os.getenv("FIRESTORE_DATABASE_ID")
-    GEMINI_GOOGLE_API_KEY: str = os.getenv("GEMINI_GOOGLE_API_KEY")
 
 settings = Settings()
