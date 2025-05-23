@@ -2,6 +2,19 @@ options:
   logging: CLOUD_LOGGING_ONLY
 
 steps:
+  # Paso 0: Instalar dependencias necesarias y ejecutar los tests
+  - name: "python:3.10-slim"
+    entrypoint: "bash"
+    args:
+      - '-c'
+      - |
+        apt-get update && apt-get install -y gcc libpq-dev make && apt-get clean
+        python -m venv /env
+        . /env/bin/activate
+        pip install --upgrade pip
+        make install-test
+        make test
+
   # Paso 1: Autenticar con Artifact Registry
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:latest'
     entrypoint: 'bash'

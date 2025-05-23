@@ -1,3 +1,4 @@
+import os
 from google.cloud import firestore
 from app.config import settings
 
@@ -10,7 +11,11 @@ if not project_id:
 if not database_id:
     raise ValueError("FIRESTORE_DATABASE_ID is not configured")
 
-client = firestore.Client(project=project_id, database=database_id)
+if os.environ.get("APP_ENV") == "test":
+    from mockfirestore import MockFirestore
+    client = MockFirestore()
+else:
+    client = firestore.Client(project=project_id, database=database_id)
 
 def get_firestore_client():
     return client
