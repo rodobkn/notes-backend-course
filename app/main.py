@@ -7,7 +7,9 @@ app = FastAPI()
 # Configurar CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # TODO: Cambiar a la URL de tu frontend, para mejorar la seguridad
+    allow_origins=[
+        "https://notes-frontend-service-846045290007.us-central1.run.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
