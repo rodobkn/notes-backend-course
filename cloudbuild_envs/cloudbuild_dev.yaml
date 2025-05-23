@@ -58,7 +58,7 @@ steps:
         'us-central1',
         '--ingress',
         'all',
-        '--allow-unauthenticated',
+        '--no-allow-unauthenticated',
         '--cpu',
         '1',
         '--memory',
