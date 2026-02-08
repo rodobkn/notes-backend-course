@@ -1,5 +1,5 @@
 # Usamos como base una imagen ligera de python 3.10
-FROM python:3.10-slim
+FROM python:3.12-slim
 
 # Instalar dependencias del sistema necesarias
 RUN apt-get update && apt-get install -y gcc && apt-get clean
