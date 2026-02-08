@@ -1,1 +1,1 @@
-Project Python Version: 3.10
+Project Python Version: 3.12.12
